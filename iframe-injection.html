@@ -1,0 +1,74 @@
+
+
+
+<!-- Code for ClickFunnels Popup (in the Custom JavaScript / HTML section)-->
+<div id="ifrmPlaceholder"></div>
+
+<script>
+var mmUID = (function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var URLmmUID = urlParams.get('mmUID');
+    var LOCmmUID = localStorage.getItem('mmUID');
+
+    if (URLmmUID) {
+        localStorage.setItem('mmUID', URLmmUID);
+        return URLmmUID
+    } else if (!URLmmUID && LOCmmUID) {
+        return LOCmmUID
+    } else {
+        var mmUID = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
+        localStorage.setItem('mmUID', mmUID);
+        return mmUID
+    }
+})();
+console.log('1. clickfunnels mmUID is '+mmUID);
+  
+var source = 'https://event.webinarjam.com/register/1/mlprqc7/form?ts=1609348978&amp;offset=-300&mmUID='+mmUID;
+console.log('2. clickfunnels appending source '+source);
+
+var ifrm = document.createElement('iframe');
+ifrm.setAttribute('id', 'wj_registration_frame'); // assign an id
+ifrm.setAttribute('src', source); // set source with mmUID
+ifrm.setAttribute('frameborder', '0');
+ifrm.setAttribute('name', 'wj_registration_frame');
+ifrm.setAttribute('scrolling', 'no');
+ifrm.setAttribute('style', 'height: 860px; max-width: 500px; width: 100%; z-index: 1000000;');
+
+var ifrmPlaceholder = document.getElementById('ifrmPlaceholder');
+ifrmPlaceholder.appendChild(ifrm);
+</script>
+
+
+
+<!-- Code for EverWebinar Page (Registration form tracking section) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var lastName = document.querySelector("div.form-group:nth-child(2) > div:nth-child(2) > input:nth-child(1)")
+        lastName.type="hidden"; // makes the lastname field a hidden form field
+        document.querySelector('div.form-group:nth-child(2)').style.display="none"; // removes lastname field formatting
+        document.querySelector('.close').style.display="none"; // hides the close button
+        
+        var mmUID = (function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            console.log('3. everwebinar called with url params '+urlParams);
+            var URLmmUID = urlParams.get('mmUID');
+            var LOCmmUID = localStorage.getItem('mmUID');
+        
+            if (URLmmUID) {
+                localStorage.setItem('mmUID', URLmmUID);
+                return URLmmUID
+            } else if (!URLmmUID && LOCmmUID) {
+                return LOCmmUID
+            } else {
+                var mmUID = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
+                localStorage.setItem('mmUID', mmUID);
+                return mmUID
+            }
+        })();
+        
+        lastName.value = mmUID;
+        console.log('4. everwebinar loaded user '+mmUID)
+
+    }, false);
+    
+</script>
